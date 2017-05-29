@@ -18,7 +18,7 @@ class Profile {
 
 	public function init() {
 
-		add_shortcode( 'author_profile_code', array( &$this, 'author_profile' ) );
+		add_shortcode( 'author_profile', array( &$this, 'author_profile_code' ) );
 
 	}
 
