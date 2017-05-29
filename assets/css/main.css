@@ -1,0 +1,27 @@
+.author__wrapper {
+    position: relative;
+    padding: 0 10px 0 116px;
+    border: 1px solid #cdcdcd;
+    background: #f6f6f6;
+}
+
+.author__avatar {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.author__name {
+    padding: 0;
+    margin: 4px 0;
+    font-size: 24px;
+}
+
+.author__header {
+    margin: 28px 0 14px 0;
+}
+
+.wpe__author__entry {
+    border-top: 1px solid #cdcdcd;
+    padding: 10px 0;
+}
