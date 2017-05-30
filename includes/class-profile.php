@@ -12,13 +12,13 @@ class Profile {
 	 */
 	public function __construct() {
 
-		add_action( 'wp_enqueue_scripts', array( &$this, 'load_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_assets' ) );
 
 	}
 
 	public function init() {
 
-		add_shortcode( 'author_profile', array( &$this, 'author_profile_code' ) );
+		add_shortcode( 'author_profile', array( $this, 'author_profile_code' ) );
 
 	}
 

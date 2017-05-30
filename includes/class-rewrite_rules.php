@@ -11,8 +11,8 @@ class Rewrite_Rules {
 
 		$this->settings = $settings;
 
-		add_action( 'init', array( &$this, 'custom_author_url' ) );
-		add_action( 'init', array( &$this, 'custom_rewrite_rule' ), 10, 0 );
+		add_action( 'init', array( $this, 'custom_author_url' ) );
+		add_action( 'init', array( $this, 'custom_rewrite_rule' ), 10, 0 );
 
 	}
 

@@ -7,10 +7,10 @@ class Settings {
 
 	public function __construct() {
 
-		add_action( 'admin_init', array( &$this, 'wpe_register_setting' ) );
+		add_action( 'admin_init', array( $this, 'wpe_register_setting' ) );
 		add_action( 'init', array( $this, 'eval_flush_rewrite_rules' ) );
 		add_action( 'update_option_author_profile_page_id', array(
-			&$this,
+			$this,
 			'insert_shortcode'
 		), 10, 2 );
 
@@ -21,7 +21,7 @@ class Settings {
 		add_settings_section(
 			'general_author_section',
 			'Perfil de autor',
-			array( &$this, 'general_author_section_description' ),
+			array( $this, 'general_author_section_description' ),
 			'general'
 		);
 
@@ -30,7 +30,7 @@ class Settings {
 		add_settings_field(
 			'author_profile_page_id',
 			'This is the setting title',
-			array( &$this, 'author_profile_page_id_select' ),
+			array( $this, 'author_profile_page_id_select' ),
 			'general',
 			'general_author_section',
 			array(
