@@ -58,7 +58,12 @@ class Settings {
 
 			foreach ( $pages as $page ) {
 
-				echo '<option value="' . $page->ID . '" ' . selected( $author_profile_page_id, $page->ID ) . '>' . $page->post_title . '</option>';
+				printf(
+					'<option value="%s" %s >%s</option>',
+					$page->ID,
+					selected( $author_profile_page_id, $page->ID, false ),
+					$page->post_title
+				);
 
 			}
 
