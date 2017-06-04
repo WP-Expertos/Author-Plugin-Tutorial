@@ -24,6 +24,7 @@ function wpe_author_profile_init() {
 	require_once 'includes/class-rewrite_rules.php';
 
 	$rewrite_rules = new \WPE\Author\Rewrite_Rules( $settings );
+	$rewrite_rules->init();
 
 	require_once 'includes/class-profile.php';
 

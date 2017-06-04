@@ -50,13 +50,18 @@ class Settings {
 
 		echo '<option value="0">-- Selecciona --</option>';
 
-		if ( ! is_wp_error( $pages = get_pages( array( 'status' => array( 'pending', 'draft', 'future' ) ) ) ) ) {
+		$author_profile_page_id = get_option( 'author_profile_page_id' );
+
+		$pages = get_pages( array( 'status' => array( 'pending', 'draft', 'future' ) ) );
+
+		if ( ! is_wp_error( $pages ) ) {
+
 			foreach ( $pages as $page ) {
 
-				$selected = ( $page->ID == get_option( 'author_profile_page_id' ) ) ? ' selected ' : '';
-				echo '<option value="' . $page->ID . '" ' . $selected . '>' . $page->post_title . '</option>';
+				echo '<option value="' . $page->ID . '" ' . selected( $author_profile_page_id, $page->ID ) . '>' . $page->post_title . '</option>';
 
 			}
+
 		}
 
 		echo '</select>';
@@ -64,7 +69,7 @@ class Settings {
 
 	public function insert_shortcode( $old_value, $value ) {
 
-		if ( $value == $old_value ) {
+		if ( $value === $old_value ) {
 			return;
 		}
 
@@ -85,7 +90,7 @@ class Settings {
 
 	public function eval_flush_rewrite_rules() {
 
-		if ( '1' == get_option( 'next_time_force_reflush' ) ) {
+		if ( '1' === get_option( 'next_time_force_reflush' ) ) {
 
 			flush_rewrite_rules();
 
@@ -97,7 +102,9 @@ class Settings {
 
 	public function get_author_profile_page_id() {
 
-		return ( 0 <= ( $id = get_option( 'author_profile_page_id' ) ) ) ? $id : false;
+		$id = get_option( 'author_profile_page_id' );
+
+		return ( 0 <= $id ) ? $id : false;
 
 	}
 }

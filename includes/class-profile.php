@@ -5,20 +5,12 @@ namespace WPE\Author;
 
 class Profile {
 
-	private static $user;
-
-	/**
-	 * Profile constructor.
-	 */
-	public function __construct() {
-
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_assets' ) );
-
-	}
+	private $user;
 
 	public function init() {
 
-		add_shortcode( 'author_profile', array( $this, 'author_profile_code' ) );
+		add_shortcode( 'author_profile', array( $this, 'get_author_profile' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_assets' ) );
 
 	}
 
@@ -33,13 +25,7 @@ class Profile {
 
 	}
 
-	public function author_profile_code( $atts ) {
-
-		return $this->print_author_profile();
-
-	}
-
-	public function print_author_profile() {
+	public function get_author_profile() {
 
 		global $wp_query;
 
@@ -47,79 +33,75 @@ class Profile {
 
 		if ( ! empty ( $wp_query->query_vars['author_name'] ) ) {
 
-			self::$user = get_user_by( 'login', $wp_query->query_vars['author_name'] );
+			$this->user = get_user_by( 'login', $wp_query->query_vars['author_name'] );
 
 			$output .= $this->author_box();
 			$output .= $this->author_posts();
 
 		} else {
 
-			$output .= wpautop( 'Selecciona un usuario para visualizar su perfil' );
+			$output .= __( 'Selecciona un usuario para visualizar su perfil', 'wpe-author-profile' );
 		}
 
 		return $output;
 
 	}
 
-	public function author_box() {
+	private function author_box() {
 
 		$output = '';
 
-		if ( empty( self::$user ) ) {
+		if ( empty( $this->user ) ) {
 			return $output;
 		}
 
 		ob_start();
 
-		set_query_var( 'user', self::$user );
+		set_query_var( 'user', $this->user );
 		load_template( WPEAP_PATH . 'views/author-box.php' );
 
-		$output = ob_get_contents();
-		ob_clean();
+		$output = ob_get_clean();
 
 		return $output;
 
 	}
 
-	public function author_posts() {
+	private function author_posts() {
 
 		$output = '';
 
-		if ( empty( self::$user ) ) {
-			return $output;
+		if ( empty( $this->user ) ) {
+			return __('Este autor no existe.', 'wpe-author-profile' );
 		}
 
 		$author_posts = new \WP_Query( array(
 			'nopaging' => 1,
-			'author'   => self::$user->ID
+			'author'   => $this->user->ID
 		) );
 
-		if ( $author_posts->have_posts() ) {
+		if ( ! $author_posts->have_posts() ) {
+			return __('Este autor aún no tiene publicaciones.', 'wpe-author-profile' );
+		}
 
-			$output .= '<div class="author__posts">';
-			$output .= '<h2 class="author__header">Publicaciones</h2>';
+
+		$output .= '<div class="author__posts">';
+		$output .= '<h2 class="author__header">Publicaciones</h2>';
 
 
-			while ( $author_posts->have_posts() ) {
-				$author_posts->the_post();
+		while ( $author_posts->have_posts() ) {
+			$author_posts->the_post();
 
-				ob_start();
+			ob_start();
 
-				load_template( WPEAP_PATH . '/views/author-post.php' );
+			load_template( WPEAP_PATH . '/views/author-post.php' );
 
-				$output .= ob_get_contents();
-				ob_clean();
-
-			}
-
-			$output .= '</div> <!-- .author__posts -->';
-
-			wp_reset_postdata();
-		} else {
-
-			$output .= wpautop( 'Este autor aún no tiene publicaciones.' );
+			$output .= ob_get_clean();
 
 		}
+
+		$output .= '</div> <!-- .author__posts -->';
+
+		wp_reset_postdata();
 
 		return $output;
 

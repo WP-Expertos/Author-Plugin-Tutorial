@@ -11,6 +11,10 @@ class Rewrite_Rules {
 
 		$this->settings = $settings;
 
+	}
+
+	public function init() {
+
 		add_action( 'init', array( $this, 'custom_author_url' ) );
 		add_action( 'init', array( $this, 'custom_rewrite_rule' ), 10, 0 );
 
@@ -22,9 +26,15 @@ class Rewrite_Rules {
 
 	function custom_rewrite_rule() {
 
-		$page = get_post( $this->settings->get_author_profile_page_id() );
+		$author_profile_page_id = $this->settings->get_author_profile_page_id();
 
-		if ( '' != $page->post_name ) {
+		if ( false === $author_profile_page_id ) {
+			return;
+		}
+
+		$page = get_post( $author_profile_page_id );
+
+		if ( null !== $page && '' != $page->post_name ) {
 
 			add_rewrite_rule( '^' . $page->post_name . '/([^/]*)/?', 'index.php?page_id=4&author_name=$matches[1]', 'top' );
 
