@@ -71,7 +71,7 @@ class Profile {
 		$output = '';
 
 		if ( empty( $this->user ) ) {
-			return __('Este autor no existe.', 'wpe-author-profile' );
+			return __( 'Este autor no existe.', 'wpe-author-profile' );
 		}
 
 		$author_posts = new \WP_Query( array(
@@ -80,7 +80,7 @@ class Profile {
 		) );
 
 		if ( ! $author_posts->have_posts() ) {
-			return __('Este autor aún no tiene publicaciones.', 'wpe-author-profile' );
+			return __( 'Este autor aún no tiene publicaciones.', 'wpe-author-profile' );
 		}
 
 
